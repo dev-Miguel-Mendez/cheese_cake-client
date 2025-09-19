@@ -1,9 +1,10 @@
 from lib.ssh_client import ssh_client
-from colorama import Back
+from colorama import Back, Fore
 
 
 
 WORK_DIR = "~/Desktop/cheese_cake"
+CHEESE_CAKE_EXECUTABLE_URL = "https://github.com/dev-Miguel-Mendez/cheese_cake-agent/releases/download/my_tag/cheese_cake"
 
 def download_agent_in_server():
     """ Create Desktop/cheese_cake and cd into it """
@@ -15,7 +16,8 @@ def download_agent_in_server():
 
     return_code = so.channel.recv_exit_status()
 
-    print(return_code)
-
+    if return_code == 0:
+        raise Exception(Fore.YELLOW + "Agent already downloaded", Fore.RESET)
+    ssh_client.exec_command("curl -L -o cheese_cake_executable " + CHEESE_CAKE_EXECUTABLE_URL)
 
     print(Back.GREEN + "Downloaded agent in server!" + Back.RESET)
