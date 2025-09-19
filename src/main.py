@@ -1,6 +1,6 @@
 import questionary
-from controllers.download_agent_in_server import download_agent_in_server
 import bootstrap_env # pylint: disable=all #type: ignore
+from controllers.download_agent_in_server import download_agent_in_server
 
 
 # servers = {
