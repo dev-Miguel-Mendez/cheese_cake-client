@@ -32,8 +32,13 @@ result = questionary.prompt([
 
 
 match result["Action"]:
-    case "Set CI/CD for instance":
+
+    case "Download agent in server":
         download_agent_in_server()
+
+    case "Set CI/CD for instance":
+        pass
+
     case _:
         print('')
 
