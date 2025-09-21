@@ -6,7 +6,7 @@ load_dotenv(".env")
 
 required_env = [
     "SSH_PASSPHRASE",
-    "SSH_HOST"
+    "HOST"
 ]
 
 
