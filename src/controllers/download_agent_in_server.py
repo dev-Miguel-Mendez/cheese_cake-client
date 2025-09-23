@@ -6,7 +6,6 @@ WORK_DIR = "~/Desktop/cheese_cake"
 CHEESE_CAKE_EXECUTABLE_URL = "https://github.com/dev-Miguel-Mendez/cheese_cake-agent/releases/download/my_tag/cheese_cake"
 
 def download_agent_in_server():
-    """ Create Desktop/cheese_cake and cd into it """
 
     ssh_client.exec_command(f'mkdir -p {WORK_DIR}')
 
