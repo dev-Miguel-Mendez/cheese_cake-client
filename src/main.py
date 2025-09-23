@@ -1,8 +1,9 @@
 from typing import Dict, Callable, Any
+import subprocess
 import questionary
 import bootstrap_env # pylint: disable=all #type: ignore
 from controllers.download_agent_in_server import download_agent_in_server
-
+from controllers.runner_controllers import send_runner_config_file
 
 # servers = {
 #     "US": "123",
@@ -18,9 +19,11 @@ from controllers.download_agent_in_server import download_agent_in_server
 # }
 
 
+subprocess.run("clear")
+
 actions: Dict[str, Callable [[], Any]] = {
     "Download agent in server": download_agent_in_server,
-    "Send runner configuration file": 
+    "Send runner configuration file": send_runner_config_file,
     "Spawn more containers": lambda: print('Test'),
     "Remove existing containers": lambda: (print('Test'), print("YOU CAN DO MANY THINGS IN A LAMBDA")),
     "Spawn EC2 instance": lambda: print(''),
