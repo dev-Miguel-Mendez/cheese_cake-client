@@ -3,18 +3,19 @@ from colorama import Back, Fore
 
 
 WORK_DIR = "~/Desktop/cheese_cake"
-CHEESE_CAKE_EXECUTABLE_URL = "https://github.com/dev-Miguel-Mendez/cheese_cake-agent/releases/download/my_tag/cheese_cake"
+# CHEESE_CAKE_EXECUTABLE_URL = "https://github.com/dev-Miguel-Mendez/cheese_cake-agent/releases/download/my_tag/cheese_cake"
+CHEESE_CAKE_REPO_URL = "https://github.com/dev-Miguel-Mendez/cheese_cake-agent.git"
 
 def download_agent_in_server():
 
-    ssh_client.exec_command(f'mkdir -p {WORK_DIR}')
+    ssh_client.exec_command(f'mkdir -p {WORK_DIR}') #* If already exists, it won't throw an error
 
-    si, so, se = ssh_client.exec_command(f'test -f {WORK_DIR}/cheese_cake_executable') #type: ignore # pylint: disable=all
+    si, so, se = ssh_client.exec_command(f'test -d {WORK_DIR}/cheese_cake_agent/.git') #type: ignore # pylint: disable=all
 
     return_code = so.channel.recv_exit_status()
 
     if return_code == 0:
         raise Exception(Fore.RED + "Agent already downloaded" + Fore.RESET)
-    ssh_client.exec_command(f"curl -L -o {WORK_DIR}/cheese_cake_executable {CHEESE_CAKE_EXECUTABLE_URL}")
-
-    print(Back.GREEN + "Downloaded agent in server!" + Back.RESET)
+    # ssh_client.exec_command(f"curl -L -o {WORK_DIR}/cheese_cake_executable {CHEESE_CAKE_EXECUTABLE_URL}")
+    ssh_client.exec_command(f"git clone {CHEESE_CAKE_REPO_URL} {WORK_DIR}/cheese_cake_agent")
+    print(Back.GREEN + "Downloaded agent in server!" + Back.RESET)whic
