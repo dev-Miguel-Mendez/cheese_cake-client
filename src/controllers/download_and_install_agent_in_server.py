@@ -19,25 +19,30 @@ def download_agent_in_server():
 
     ssh_client.exec_command(f'mkdir -p {WORK_DIR}') #* If already exists, it won't throw an error
 
-    repo_exists = check_repo_exists()
-
-    if repo_exists == 0:
-        raise Exception(Fore.RED + "Agent already downloaded" + Fore.RESET)
-    # ssh_client.exec_command(f"curl -L -o {WORK_DIR}/cheese_cake_executable {CHEESE_CAKE_EXECUTABLE_URL}")
-    ssh_client.exec_command(f"git clone {CHEESE_CAKE_REPO_URL} {AGENT_REPOSITORY_DIR}")
+    ssh_client.exec_command(f"cd {AGENT_REPOSITORY_DIR} && rm -rf ./* ./.??* && git clone {CHEESE_CAKE_REPO_URL} .") #* Remove everything to always get the latest version. (Could try "git merge" instead) 
     print(Back.GREEN + "Downloaded agent in server!" + Back.RESET)
 
 
 
 def start_agent():
-    repo_exists = check_repo_exists()
+    si, so, se = ssh_client.exec_command(f'test -d {AGENT_REPOSITORY_DIR}/.git') #type: ignore # pylint: disable=all
+    repo_exists = so.channel.recv_exit_status()
 
     if repo_exists == 1:
         raise Exception(Fore.RED + "Agent not downloaded!" + Fore.RESET)
-    
 
-    ssh_client.exec_command(f"cd {AGENT_REPOSITORY_DIR} && python3 -m venv .venv")
+    #$ Need to run cd multiple times because exec_command opens  a new shell every time. 
 
-    ssh_client.exec_command(f"cd {AGENT_REPOSITORY_DIR} && source .venv/bin/activate && pip install -r requirements.txt")
+    si, so, se = ssh_client.exec_command(f"cd {AGENT_REPOSITORY_DIR} && python3 -m venv .venv") #type: ignore # pylint: disable=all
 
-    ssh_client.exec_command(f"cd {AGENT_REPOSITORY_DIR} && source .venv/bin/activate && python3 -m agent.run_server.py")
+    print(so.read().decode())
+    print(se.read().decode())
+
+    si, so, se = ssh_client.exec_command(f"cd {AGENT_REPOSITORY_DIR} && source .venv/bin/activate && pip install -r requirements.txt") #type: ignore # pylint: disable=all
+
+    print(so.read().decode())
+    print(so.read().decode())
+
+    si, so, se = ssh_client.exec_command(f"cd {AGENT_REPOSITORY_DIR} && source .venv/bin/activate && python3 -m agent.run_server") #type: ignore # pylint: disable=all
+    print(so.read().decode())
+    print(se.read().decode())

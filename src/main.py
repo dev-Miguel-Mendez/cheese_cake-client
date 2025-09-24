@@ -23,9 +23,9 @@ subprocess.run("clear")
 
 actions: Dict[str, Callable [[], Any]] = {
     "Download agent in server": download_agent_in_server,
+    "Start agent": start_agent,
     "Send runner configuration file to agent": send_runner_config_file,
     "Download runner in  agent and start": download_and_start_runner,
-    "Start agent": start_agent,
     # "Spawn more containers": lambda: print('Test'),
     # "Remove existing containers": lambda: (print('Test'), print("YOU CAN DO MANY THINGS IN A LAMBDA")),
     # "Spawn EC2 instance": lambda: print(''),
@@ -45,7 +45,7 @@ while True:
         {
             "type": "select",
             "name": "action",
-            "message": "Select an instance to connect to:",  #% An instance and not a "project" because you will usually only handle a single project.
+            "message": "Please select an action:",  #% An instance and not a "project" because you will usually only handle a single project.
             "choices": list(actions.keys())
         }
     ])
