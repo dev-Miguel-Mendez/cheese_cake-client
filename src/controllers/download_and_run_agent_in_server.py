@@ -1,6 +1,6 @@
 from lib.ssh_client import ssh_client
 from colorama import Back, Fore
-
+from utils.exec_paramiko_command_and_print import exec_paramiko_command_and_print
 
 
 
@@ -15,10 +15,11 @@ def download_agent_in_server():
     ssh_client.exec_command(f'mkdir -p {AGENT_REPOSITORY_DIR}') #* If already exists, it won't throw an error
 
     #* Remove everything to always get the latest version. (Could try "git merge" instead)  and THEN CLONING
-    si, so, se = ssh_client.exec_command(f"cd {AGENT_REPOSITORY_DIR} && rm -rf ./* ./.??* && git clone {CHEESE_CAKE_REPO_URL} .")  #type: ignore # pylint: disable=all
 
-    print(se.read().decode())
-    print(so.read().decode())
+    exec_paramiko_command_and_print(
+        cmd=f"rm -rf ./* ./.??* && git clone {CHEESE_CAKE_REPO_URL} .",
+        cwd=AGENT_REPOSITORY_DIR
+    )
 
     print(Back.GREEN + "Downloaded agent in server!" + Back.RESET)
 
@@ -33,16 +34,8 @@ def start_agent():
 
     #% Even the server was installed and ran previously, all these commands can run again.
 
-    si, so, se = ssh_client.exec_command(f"cd {AGENT_REPOSITORY_DIR} && python3 -m venv .venv") #type: ignore # pylint: disable=all
+    exec_paramiko_command_and_print(cmd="python3 -m venv .venv", cwd=AGENT_REPOSITORY_DIR)
 
-    print(so.read().decode())
-    print(se.read().decode())
-
-    si, so, se = ssh_client.exec_command(f"cd {AGENT_REPOSITORY_DIR} && source .venv/bin/activate && pip install -r requirements.txt") #type: ignore # pylint: disable=all
-
-    print(so.read().decode())
-    print(so.read().decode())
-
-    si, so, se = ssh_client.exec_command(f"cd {AGENT_REPOSITORY_DIR} && source .venv/bin/activate && python3 -m agent.run_server") #type: ignore # pylint: disable=all
-    print(so.read().decode())
-    print(se.read().decode())
+    exec_paramiko_command_and_print(cmd="source .venv/bin/activate && pip install -r requirements.txt", cwd=AGENT_REPOSITORY_DIR)
+    
+    exec_paramiko_command_and_print(cmd="source .venv/bin/activate && python3 -m agent.run_server", cwd=AGENT_REPOSITORY_DIR)

@@ -12,7 +12,7 @@ def install_python_on_server():
     ssh_client.exec_command("apt install -y  python3 python3-pip python3-venv")
 
     si, so, se = python_exist = ssh_client.exec_command("which python3") #type: ignore # pylint: disable=all
-
+    
     if(return_code == 1):
         raise Exception(Fore.RED + "Python3 not present after installation" + Fore.RESET)
     
