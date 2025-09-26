@@ -24,7 +24,7 @@ subprocess.run("clear")
 actions: Dict[str, Callable [[], Any]] = {
     "Install python on server": install_python_on_server,
     "Download agent in server": download_agent_in_server,
-    "Start agent": start_agent,
+    "Start agent and API": start_agent,
     "Send runner configuration file to agent": send_runner_config_file,
     "Download github runner in  agent and start": download_and_start_github_runner,
     # "Spawn more containers": lambda: print('Test'),

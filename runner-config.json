@@ -1,6 +1,6 @@
 {
 	"path_to_runner": "~/Desktop/cheese_cake/actions-runner",
 	"tarball_file_name": "actions-runner-linux-x64-2.328.0.tar.gz",
-	"target_github_repository": "https://github.com/dev-Miguel-Mendez/self_hosted_runner_test",
-	"runner_token": "BJNKPU6B45UE3HO7LSOA7NLI2NIUK"
+	"target_github_repository": "https://github.com/dev-Miguel-Mendez/test_Fast_API_app_self_hosted_runner",
+	"runner_token": "BJNKPU2HGWJCPHVD64DC3GLI2YCG6"
 }

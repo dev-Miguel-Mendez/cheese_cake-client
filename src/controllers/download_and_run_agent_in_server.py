@@ -1,7 +1,7 @@
+import os
 from lib.ssh_client import ssh_client
 from colorama import Back, Fore
 from utils.exec_paramiko_command_and_print import exec_paramiko_command_and_print
-
 
 
 AGENT_REPOSITORY_DIR = f"~/Desktop/cheese_cake/cheese_cake_repository"
@@ -37,5 +37,7 @@ def start_agent():
     exec_paramiko_command_and_print(cmd="python3 -m venv .venv", cwd=AGENT_REPOSITORY_DIR)
 
     exec_paramiko_command_and_print(cmd="source .venv/bin/activate && pip install -r requirements.txt", cwd=AGENT_REPOSITORY_DIR)
-    
+
+    exec_paramiko_command_and_print(cmd=f"fuser -k {os.environ.get("HOST_AGENT_PORT")}/tcp") #* In case the agent was already running on given port, stop it to avoid "address already in use"
+
     exec_paramiko_command_and_print(cmd="source .venv/bin/activate && python3 -m agent.run_server", cwd=AGENT_REPOSITORY_DIR)
